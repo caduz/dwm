@@ -1,13 +1,13 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int gappx     = 6;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Hack:size=11" };
-static const char dmenufont[]       = "Hack:size=11";
+static const char *fonts[]          = { "Ubuntu Mono:size=13" };
+static const char dmenufont[]       = "Ubuntu Mono:size=13";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -49,11 +49,14 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int attachbelow = 1;    /* 1 means attach after the currently active window */
 
+#include "grid.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+	{ "HHH",      grid },
+	{ NULL,       NULL },
 };
 
 /* key definitions */
@@ -74,6 +77,7 @@ static const char *dmenucmd[] = { "dmenu-apps", "-m", dmenumon, "-fn", dmenufont
 static const char *termcmd[]  = { "xfce4-terminal", NULL };
 static const char *thunarcmd[] = { "thunar", NULL };
 static const char *screenshotcmd[] = { "flameshot-gui", NULL };
+static const char *bkcmd[]  = { "dmenu-bk", NULL };
 
 /* navigate through tabs include */
 #include "shiftview.c"
@@ -86,6 +90,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_e,      spawn,          {.v = thunarcmd } },
+	{ MODKEY,                       XK_k,      spawn,          {.v = bkcmd } },
 	{ 0,                            XK_Print,  spawn,          {.v = screenshotcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ Mod1Mask,                     XK_Tab,    focusstack,     {.i = +1 } },
@@ -103,7 +108,9 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY|ShiftMask,             XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY|ShiftMask,             XK_p,      setlayout,      {0} },
+	{ MODKEY|ShiftMask,             XK_g,      setlayout,      {.v = &layouts[3]} },
+    { MODKEY,		                XK_l,      cyclelayout,    {.i = +1 } },
+    { MODKEY|ShiftMask,             XK_l,      cyclelayout,    {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY,                       XK_t,      tag,            {.ui = ~0 } },
